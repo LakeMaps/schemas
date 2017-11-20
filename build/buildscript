@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+cd "$(npm prefix)/build/"
+
+clone-gh-project() {
+    local -r key="${1}"
+    local -r dir="$(basename "${key}")"
+
+    if [[ -d "${dir}/.git/" ]]
+    then
+        return
+    fi
+
+    git clone --depth=1 "https://github.com/${key}" "${dir}"
+}
+
+# Dependencies
+clone-gh-project "whymarrh/clutz"
+clone-gh-project "google/closure-compiler"
+clone-gh-project "google/closure-library"
+clone-gh-project "google/protobuf"
+
+# Build Clutz
+(cd clutz/ && gradle --no-daemon installDist)
+
+# We need the compile against the Closure libs to resolve
+# some of the types Clutz uses in the declaration files,
+# so we'll move this out of the build directory for `npm pack`
+cp clutz/src/resources/closure.lib.d.ts ../
+
+# Produce protos.js
+npm run buildClosureLibrary
+
+# Run Clutz
+clutz/build/install/clutz/bin/clutz ../protos.js -o ../protos.d.ts \
+    --externs \
+        closure-compiler/externs/es3.js \
+        closure-compiler/externs/es5.js \
+        closure-compiler/externs/es6.js \
+        closure-library/closure/goog/base.js \
+        closure-library/closure/goog/array/array.js \
+        closure-library/closure/goog/asserts/asserts.js \
+        closure-library/closure/goog/crypt/base64.js \
+        closure-library/closure/goog/debug/error.js \
+        closure-library/closure/goog/dom/nodetype.js \
+        closure-library/closure/goog/labs/useragent/browser.js \
+        closure-library/closure/goog/labs/useragent/engine.js \
+        closure-library/closure/goog/labs/useragent/platform.js \
+        closure-library/closure/goog/labs/useragent/util.js \
+        closure-library/closure/goog/object/object.js \
+        closure-library/closure/goog/reflect/reflect.js \
+        closure-library/closure/goog/string/string.js \
+        closure-library/closure/goog/useragent/product.js \
+        closure-library/closure/goog/useragent/useragent.js \
+        protobuf/js/map.js \
+        protobuf/js/message.js \
+        protobuf/js/binary/arith.js \
+        protobuf/js/binary/constants.js \
+        protobuf/js/binary/decoder.js \
+        protobuf/js/binary/encoder.js \
+        protobuf/js/binary/reader.js \
+        protobuf/js/binary/utils.js \
+        protobuf/js/binary/writer.js \
+    --skipEmitRegExp \
+        '(?:closure-.*)|(?:protobuf.*)'
