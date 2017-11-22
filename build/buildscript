@@ -19,7 +19,7 @@ clone-gh-project() {
 }
 
 # Dependencies
-clone-gh-project "whymarrh/clutz"
+clone-gh-project "angular/clutz"
 clone-gh-project "google/closure-compiler"
 clone-gh-project "google/closure-library"
 clone-gh-project "google/protobuf"
