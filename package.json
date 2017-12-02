@@ -6,7 +6,7 @@
   "scripts": {
     "buildClosureLibrary": "protoc --js_out='library=protos,binary:./' schemas/*.proto",
     "build": "protoc --js_out='import_style=commonjs,binary:./' schemas/*.proto",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "build/buildscript && npm run build"
   },
   "repository": {
     "type": "git",
