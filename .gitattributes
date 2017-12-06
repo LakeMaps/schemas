@@ -1,2 +1,3 @@
 * text=auto
+build/* linguist-vendored
 index.js linguist-vendored

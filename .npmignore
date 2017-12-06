@@ -1,7 +1,14 @@
+*.js
+*.d.ts
 *.tgz
 .editorconfig
 .gitattributes
 .gitignore
 .npmignore
 .travis.yml
+!closure.lib.d.ts
+!index.js
+!index.d.ts
+!protos.d.ts
+build/
 node_modules/

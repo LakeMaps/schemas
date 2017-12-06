@@ -6,6 +6,13 @@ env:
     - PROTOC_OUT=js PROTOC_OUT_OPTIONS="import_style=commonjs,binary:"
     - PROTOC_OUT=python
     - PROTOC_OUT=objc
+before_install:
+    - export GRADLE_VERSION='4.3.1'
+    - export GRADLE_DISTRIBUTION_URL="https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip"
+    - export TERM=dumb
+    - ( cd $HOME && curl -LO "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" )
+    - ( cd $HOME && unzip -q gradle-$GRADLE_VERSION-bin.zip && rm gradle-$GRADLE_VERSION-bin.zip )
+    - export PATH=$HOME/gradle-$GRADLE_VERSION/bin:$PATH && hash -r && gradle --version
 install:
     - export PROTOC_VERSION='3.3.0'
     - curl -sSLO "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip"
