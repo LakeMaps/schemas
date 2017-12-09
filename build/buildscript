@@ -15,7 +15,7 @@ clone-gh-project() {
         return
     fi
 
-    git clone --depth=1 "https://github.com/${key}" "${dir}"
+    git clone --depth=1 "git://github.com/${key}" "${dir}"
 }
 
 # Dependencies

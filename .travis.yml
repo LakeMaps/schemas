@@ -17,10 +17,9 @@ before_install:
     - ( cd $HOME && unzip -q gradle-$GRADLE_VERSION-bin.zip && rm gradle-$GRADLE_VERSION-bin.zip )
     - export PATH=$HOME/gradle-$GRADLE_VERSION/bin:$PATH && hash -r && gradle --version
 install:
-    - curl -sSLO "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip"
-    - mkdir protoc
-    - unzip -d protoc "protoc-${PROTOC_VERSION}-linux-x86_64.zip"
-    - export PATH="${PATH}:${PWD}/protoc/bin"
+    - ( cd $HOME && curl -sSLO "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip" )
+    - ( cd $HOME && mkdir protoc && unzip -d protoc "protoc-${PROTOC_VERSION}-linux-x86_64.zip" )
+    - export PATH="${PATH}:${HOME}/protoc/bin"
 before_script:
     - protoc --version
 script:
@@ -30,7 +29,6 @@ notifications:
     email: false
 
 deploy:
-    skip_cleanup: true
     provider: npm
     email:
         secure: UTGZP4a6KV9RfZihyeRKhvUzvEQFiK9LSEXuUBbSQ2EbFRTZmMm5kiVqP36KNqGSV69GDLxJi69cut/bzkQvoj8q2u8tGfDJQ4UMOnzcz0MICidaqi4NRb44JTAR4Nju2gJRBhnVYzNEvORXz0X4usU6+Eq2HQRwj9Z0Z11cbS1v2QwfQTcb6UafFbNIXduk5viEIK0QVfiCQRVs3H3NZlX2sGl3V0sVrrk1tibUFt7Dv9a4/qvk70pfX5B9+WR6HeAchIatTxzRB5AThqQkjAfbmMxgdJOxoM8GsfRXpv/gvab0AOqPVXnwITM4CbMJS+SPr9xMU0ZjD8pe6DjwoF0g1sFyLvKLavvYG9f22Q39Ig92uB2MNg89cXlp23+UxanTWHlfkDtyM+0oMExLMeBMkuoblvljGZ0afSOVanKC0HGXt4girlANV0rrns31dUoaRXI4YN/wM+j1YIOF81xlNiozCznGsO/551CNVgyKjgzDQesi4gcL/6lwZ8vXrA/f8MXpPRmdwdyHBsXot/1NAiMVLRQTMrRrGJd3xItbGH1QZG0jsoFd/8CJdORoPoVGJNV5Kl9kD12Mt6OrHWBptX+o7FTXZyrE7qQfxcilDDi9BgTI8LamA3juT4K6HPA/ETWG0Stem9wduTHPmO0UbYvll7qmqargevQIh0g=
