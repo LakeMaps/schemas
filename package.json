@@ -6,6 +6,7 @@
   "scripts": {
     "buildClosureLibrary": "protoc --js_out='library=protos,binary:./' schemas/*.proto",
     "build": "protoc --js_out='import_style=commonjs,binary:./' schemas/*.proto",
+    "prepare": "if [[ -n \"$CI\" ]] && grep -q ^4 <<< \"$(npm --version)\" && grep -vq install <<< \"$npm_config_argv\"; then npm run prepublishOnly; fi",
     "prepublishOnly": "build/buildscript && npm run build"
   },
   "repository": {
