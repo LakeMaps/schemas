@@ -4,7 +4,7 @@ language: generic
 env:
     global:
         - PROTOC_VERSION='3.3.0'
-        - GRADLE_VERSION='4.5'
+        - GRADLE_VERSION='4.6'
         - GRADLE_DISTRIBUTION_URL="https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip"
         - TERM=dumb
     matrix:
